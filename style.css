@@ -1,153 +1,92 @@
-/* --- ESTILOS GENERALES DEL CUERPO --- */
-/* Define la fuente, márgenes, padding y color de fondo para toda la página. */
+/* --- ESTILOS GENERALES Y DE NAVEGACIÓN --- */
 body {
-    font-family: 'Inter', sans-serif; /* Fuente principal para un look moderno */
-    margin: 0;
-    padding: 0;
-    background-color: #f3f4f6; /* Un gris claro suave para el fondo */
+    font-family: 'Inter', sans-serif;
+    background-color: #f3f4f6;
+    color: #333;
 }
-
-/* --- ESTILOS PARA EL DISEÑO DE ACORDEÓN DE PRODUCTOS --- */
-
-/* Estilo del contenedor de la cabecera de cada categoría */
-.category-header {
-    background-color: #2c3e50; /* Color de fondo azul oscuro para las cabeceras */
-    color: white; /* Texto blanco para contraste */
-    padding: 0.75rem 1rem; /* Relleno interno para dar espacio */
-    display: flex; /* Permite alinear el título y el ícono */
-    justify-content: space-between; /* Coloca el título a la izquierda y el ícono a la derecha */
-    align-items: center; /* Centra verticalmente el contenido */
-    cursor: pointer; /* Cambia el cursor para indicar que es un elemento clickable */
-    user-select: none; /* Evita que el texto de la cabecera se pueda seleccionar */
-    border-bottom: 1px solid #3d5167; /* Línea sutil para separar cabeceras */
+.hidden {
+    display: none;
 }
-
-/* Efecto al pasar el mouse sobre la cabecera de la categoría */
-.category-header:hover {
-    background-color: #34495e; /* Un azul ligeramente más claro para el efecto hover */
-}
-
-/* Estilo del ícono (+) en la cabecera */
-.category-header .icon {
-    font-size: 1.25rem; /* Tamaño del ícono */
-    font-weight: bold; /* Grosor del ícono */
-    transition: transform 0.2s ease-in-out; /* Animación suave para la rotación */
-}
-
-/* Estilo del ícono cuando la categoría está expandida */
-.category-header.expanded .icon {
-    transform: rotate(45deg); /* Gira el ícono a una 'x' para indicar que se puede cerrar */
-}
-
-/* Contenedor de la lista de productos (inicialmente oculto) */
-.product-list {
-    background-color: #fff; /* Fondo blanco para la lista */
-    max-height: 0; /* Se establece en 0 para que esté colapsado por defecto */
-    overflow: hidden; /* Oculta el contenido que excede la altura */
-    transition: max-height 0.3s ease-out; /* Animación suave para el despliegue */
-}
-
-/* Estilo de la lista de productos cuando está expandida */
-.product-list.expanded {
-    max-height: 3000px; /* Altura aumentada para mostrar listas largas de productos */
-    border-left: 1px solid #e5e7eb; /* Bordes para enmarcar la lista */
-    border-right: 1px solid #e5e7eb;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-/* Estilos comunes para la cabecera de la tabla y las filas de productos */
-.product-table-header, .product-row {
-    display: grid; /* Usa CSS Grid para alinear las columnas */
-    grid-template-columns: 3fr 1fr 1fr; /* Define 3 columnas: descripción (más ancha), unidad y cantidad */
-    align-items: center; /* Centra verticalmente el contenido de cada fila */
-    padding: 0 1rem; /* Relleno horizontal */
-    border-bottom: 1px solid #e5e7eb; /* Línea divisoria entre filas */
-}
-
-/* Estilo específico para la cabecera de la tabla de productos */
-.product-table-header {
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-    font-weight: 600; /* Texto en negrita */
-    color: #4b5563; /* Color de texto gris oscuro */
-    background-color: #f9fafb; /* Fondo gris muy claro para diferenciarla */
-}
-
-/* Estilo para cada fila de producto */
-.product-row {
-    padding-top: 0.75rem; /* Aumentado para más espacio vertical y corregir el solapamiento */
-    padding-bottom: 0.75rem; /* Aumentado para más espacio vertical y corregir el solapamiento */
-    color: #1f2937; /* Color de texto principal */
-}
-
-/* Elimina el borde inferior de la última fila para un acabado limpio */
-.product-row:last-child {
-    border-bottom: none;
-}
-
-/* Estilo para el campo de entrada de cantidad */
-.product-row input {
-    text-align: center; /* Centra el número en el campo */
-    border: 1px solid #d1d5db; /* Borde sutil */
-    border-radius: 0.375rem; /* Esquinas redondeadas */
-    padding: 0.25rem; /* Relleno interno */
-    width: 80%; /* Ancho del campo */
-    justify-self: center; /* Centra el campo dentro de su celda de la grilla */
-}
-
-/* --- ESTILOS PARA LA SECCIÓN DE PRODUCTOS MANUALES ("OTROS") --- */
-
-/* Estilo para cada fila de entrada manual */
-.manual-product-row {
-    display: grid;
-    grid-template-columns: 3fr 1fr 1fr auto; /* Columnas: Descripción, Unidad, Cantidad, Botón Eliminar */
-    gap: 1rem; /* Espacio entre las columnas */
-    align-items: center;
-    padding: 0.75rem 1rem;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.manual-product-row:last-child {
-    border-bottom: none;
-}
-
-/* Estilo para los campos de texto de la fila manual */
-.manual-product-row input[type="text"],
-.manual-product-row input[type="number"] {
-    width: 100%;
-    padding: 0.5rem;
-    border: 1px solid #d1d5db;
+.nav-button {
+    padding: 0.5rem 1rem;
     border-radius: 0.375rem;
+    font-weight: 500;
+    color: #374151;
+    transition: all 0.2s;
+    border: 2px solid transparent;
+}
+.nav-button:hover {
+    background-color: #f3f4f6;
+}
+.nav-button.active {
+    background-color: #3b82f6;
+    color: white;
+    border-color: #3b82f6;
+}
+.md\:hidden .nav-button.active {
+    border-bottom: 4px solid #3b82f6;
+    background-color: transparent;
+    color: #3b82f6;
+    border-radius: 0;
 }
 
-/* Estilo del botón para eliminar una fila manual */
-.remove-manual-row-btn {
-    background-color: #ef4444; /* Rojo */
-    color: white;
-    border: none;
-    border-radius: 50%; /* Círculo perfecto */
-    width: 2rem;
-    height: 2rem;
-    font-weight: bold;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.remove-manual-row-btn:hover {
-    background-color: #dc2626;
+
+/* --- ESTILOS PARA EL MÓDULO DE STOCK DE POLLO --- */
+#stock-module .main-container { max-width: 800px; width: 100%; margin: 2rem auto; background-color: white; padding: 1.25rem; border-radius: 10px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+#stock-module h1 { margin-bottom: 25px; font-size: 1.6em; text-align: center; }
+#stock-module h2 { font-size: 1.3em; text-align: center; }
+#stock-module .form-container { margin-bottom: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #fafafa; }
+#stock-module .input-group { margin-bottom: 15px; }
+#stock-module label { display: block; margin-bottom: 5px; font-weight: bold; }
+#stock-module input, #stock-module select { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; font-size: 16px; }
+#stock-module button { width: 100%; padding: 12px; background-color: #28a745; color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; transition: background-color 0.3s ease; }
+#stock-module button:hover { background-color: #218838; }
+#stock-module .table-container { margin-top: 20px; }
+#stock-module table { width: 100%; border-collapse: collapse; }
+#stock-module th, #stock-module td { padding: 12px; text-align: center; border-bottom: 1px solid #ddd; }
+#stock-module th:first-child, #stock-module td:first-child { text-align: left; }
+#stock-module thead th { background-color: #007bff; color: white; }
+#stock-module tbody tr:nth-child(even) { background-color: #f9f9f9; }
+#stock-module tfoot { font-weight: bold; background-color: #e9ecef; }
+#stock-module .action-btn { border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; color: white; margin: 2px; transition: background-color 0.2s ease; text-decoration: none; display: inline-block; }
+#stock-module .report-btn { background-color: #17a2b8; }
+#stock-module .delete-btn { background-color: #dc3545; }
+#stock-module .gerencia-report-button-container { margin-top: 20px; }
+#stock-module #gerencia-report-btn { background-color: #ffc107; color: #212529; font-weight: bold; }
+#stock-module .report-container { display: none; margin-top: 20px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; background-color: #e9f5ff; }
+#stock-module #reporte-texto { white-space: pre-wrap; background-color: white; padding: 15px; border: 1px solid #ccc; border-radius: 5px; font-family: 'Courier New', Courier, monospace; font-size: 14px; text-align: left; }
+#stock-module .report-actions { margin-top: 15px; display: flex; flex-direction: column; gap: 10px; }
+#stock-module .whatsapp-btn { background-color: #25D366; font-size: 14px; font-weight: bold; text-align: center; width: 100%; }
+#stock-module #cerrar-reporte-btn { width: 100%; background-color: #6c757d; padding: 8px 15px; font-size: 14px; }
+@media (max-width: 768px) {
+    #stock-module table thead, #stock-module table tfoot { display: none; }
+    #stock-module table tr { display: block; margin-bottom: 15px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); overflow: hidden; }
+    #stock-module table td { display: block; text-align: right; position: relative; padding: 10px 10px 10px 40%; border-bottom: 1px solid #eee; }
+    #stock-module table td:before { content: attr(data-label); position: absolute; left: 10px; width: 35%; text-align: left; font-weight: bold; }
+    #stock-module .card-header { display: flex; justify-content: space-between; align-items: center; background-color: #f8f9fa; font-weight: bold; padding: 15px 10px; cursor: pointer; }
+    #stock-module .card-header::before { content: none; }
+    #stock-module .card-header::after { content: '▼'; font-size: 0.8em; transition: transform 0.3s ease; }
+    #stock-module .sucursal-nombre { font-size: 1.1em; }
+    #stock-module .sucursal-final { font-size: 1em; color: #007bff; }
+    #stock-module .card-detail { max-height: 0; padding-top: 0; padding-bottom: 0; overflow: hidden; border-bottom: none; transition: max-height 0.4s ease, padding 0.4s ease; }
+    #stock-module tr.expanded .card-detail { max-height: 100px; padding-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+    #stock-module tr.expanded .card-header::after { transform: rotate(180deg); }
 }
 
-/* Estilo del botón para añadir una nueva fila manual */
-#add-manual-product-btn {
-    width: 100%;
-    padding: 0.75rem;
-    background-color: #16a34a; /* Verde */
-    color: white;
-    font-weight: bold;
-    border: none;
-    cursor: pointer;
-}
-#add-manual-product-btn:hover {
-    background-color: #15803d;
-}
+/* --- ESTILOS PARA EL MÓDULO DE GUÍA DE REMISIÓN --- */
+#guia-module .category-header { background-color: #2c3e50; color: white; padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; user-select: none; border-bottom: 1px solid #3d5167; }
+#guia-module .category-header:hover { background-color: #34495e; }
+#guia-module .category-header .icon { font-size: 1.25rem; font-weight: bold; transition: transform 0.2s ease-in-out; }
+#guia-module .category-header.expanded .icon { transform: rotate(45deg); }
+#guia-module .product-list { background-color: #fff; max-height: 0; overflow: hidden; transition: max-height 0.3s ease-out; }
+#guia-module .product-list.expanded { max-height: 1500px; border-left: 1px solid #e5e7eb; border-right: 1px solid #e5e7eb; border-bottom: 1px solid #e5e7eb; }
+#guia-module .product-table-header, #guia-module .product-row { display: grid; grid-template-columns: 3fr 1fr 1fr; align-items: center; padding: 0 1rem; border-bottom: 1px solid #e5e7eb; }
+#guia-module .product-table-header { padding-top: 0.5rem; padding-bottom: 0.5rem; font-weight: 600; color: #4b5563; background-color: #f9fafb; }
+#guia-module .product-row { padding-top: 0.75rem; padding-bottom: 0.75rem; color: #1f2937; }
+#guia-module .product-row:last-child { border-bottom: none; }
+#guia-module .product-row input { text-align: center; border: 1px solid #d1d5db; border-radius: 0.375rem; padding: 0.25rem; width: 80%; justify-self: center; }
+#guia-module .manual-product-row { display: grid; grid-template-columns: 3fr 1fr 1fr auto; gap: 0.5rem; align-items: center; padding: 0.75rem 1rem; border-bottom: 1px solid #e5e7eb; }
+#guia-module .manual-product-row:last-child { border-bottom: none; }
+#guia-module .manual-product-row input[type="text"], #guia-module .manual-product-row input[type="number"] { width: 100%; padding: 0.5rem; border: 1px solid #d1d5db; border-radius: 0.375rem; }
+#guia-module .remove-manual-row-btn { background-color: #ef4444; color: white; border: none; border-radius: 50%; width: 1.8rem; height: 1.8rem; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+#guia-module #add-manual-product-btn { width: 100%; padding: 0.75rem; background-color: #16a34a; color: white; font-weight: bold; border: none; cursor: pointer; }
