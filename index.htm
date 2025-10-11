@@ -3,38 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sistema de Gestión - Lo de Juan</title>
+    <title>SG - Lo de Juan</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-gray-100">
+<body class="bg-gray-50">
 
-    <nav class="bg-white shadow-md">
-        <div class="max-w-7xl mx-auto px-4">
-            <div class="flex justify-between items-center h-16">
-                <div class="flex-shrink-0 text-2xl font-bold text-gray-800">
-                   SG - Lo de Juan
-                </div>
-                <div class="hidden md:block">
-                    <div class="ml-10 flex items-baseline space-x-4">
-                        <button id="nav-stock-desktop" class="nav-button active">Stock de Pollo</button>
-                        <button id="nav-guia-desktop" class="nav-button">Guía de Remisión</button>
-                    </div>
-                </div>
+    <header class="bg-white shadow-md p-4 flex flex-col md:flex-row justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">SG - Lo de Juan</h1>
+        <nav class="w-full md:w-auto">
+            <div class="flex flex-col md:flex-row gap-2">
+                <button id="switchToStock" class="bg-blue-600 text-white font-semibold px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors w-full">Stock de Pollo</button>
+                <button id="switchToGuia" class="text-gray-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors w-full">Guía de Remisión</button>
             </div>
-        </div>
-        <div class="md:hidden p-2 flex justify-around border-t border-gray-200">
-            <button id="nav-stock-mobile" class="nav-button active w-1/2">Stock 🐔 </button>
-            <button id="nav-guia-mobile" class="nav-button w-1/2">Guía 📋</button>
-        </div>
-    </nav>
+        </nav>
+    </header>
 
-    <main>
-        <div id="stock-module">
+    <main class="p-4 flex flex-col items-center">
+        <div id="stock-app-container" class="w-full">
             <div class="main-container">
-                <h1>Stock de Pollo</h1>
+                <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center"> Stock de Pollo</h1>
                 <div class="form-container">
                     <h3>Agregar Nuevo Registro</h3>
                     <div class="input-group">
@@ -46,16 +38,18 @@
                             <option value="Manchay">Manchay</option>
                         </select>
                     </div>
-                    <div class="input-group"><label for="ingreso">Ingreso Inicial:</label><input type="number" id="ingreso" placeholder="Ej: 500"></div>
-                    <div class="input-group"><label for="enviado">Unidades Enviadas:</label><input type="number" id="enviado" placeholder="Ej: 200"></div>
+                    <div class="input-group"><label for="saldo-anterior">Saldo Anterior en Almacén:</label><input type="number" id="saldo-anterior"></div>
+                    <div class="input-group"><label for="ingreso">(+) Ingreso del Día:</label><input type="number" id="ingreso"></div>
+                    <div class="input-group"><label for="enviado-anterior">Enviado Días Anteriores:</label><input type="number" id="enviado-anterior"></div>
+                    <div class="input-group"><label for="enviado">(-) Unidades Enviadas Hoy:</label><input type="number" id="enviado"></div>
                     <button id="agregar-btn">Agregar a la Tabla</button>
                 </div>
                 <div class="table-container">
                     <h2>Reporte de Stock</h2>
                     <table id="reporte-tabla">
-                        <thead><tr><th>Sucursal</th><th>Ingreso Inicial</th><th>Unidades Enviadas</th><th>Final en Almacén</th><th>Acciones</th></tr></thead>
+                        <thead><tr><th>Sucursal</th><th>Stock Inicial</th><th>Total Enviado</th><th>Stock Final</th><th>Acciones</th></tr></thead>
                         <tbody id="tabla-cuerpo"></tbody>
-                        <tfoot><tr><td data-label="Concepto">TOTAL</td><td data-label="Ingreso Total" id="total-ingreso">0</td><td data-label="Enviado Total" id="total-enviado">0</td><td data-label="Final Total" id="total-final">0</td><td></td></tr></tfoot>
+                        <tfoot><tr><td data-label="Concepto">TOTAL</td><td data-label="Stock Inicial Total" id="total-ingreso">0</td><td data-label="Enviado Total" id="total-enviado">0</td><td data-label="Stock Final Total" id="total-final">0</td><td></td></tr></tfoot>
                     </table>
                 </div>
                 <div class="gerencia-report-button-container"><button id="gerencia-report-btn">Generar Reporte para Gerencia</button></div>
@@ -69,48 +63,46 @@
             </div>
         </div>
 
-        <div id="guia-module" class="hidden">
-            <div class="flex flex-col items-center p-4">
-                <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-6 mt-4 text-center">Guía de Remisión <br class="md:hidden">LO DE JUAN</h1>
-                <form id="guideForm" class="bg-white p-6 md:p-8 rounded-xl shadow-lg w-full max-w-4xl mb-8">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                        <div><label for="remitente" class="block text-gray-700 text-sm font-semibold mb-2">Remitente:</label><select id="remitente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
-                        <div><label for="destinatario" class="block text-gray-700 text-sm font-semibold mb-2">Destinatario:</label><select id="destinatario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
-                        <div><label for="direccionPartida" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Partida:</label><select id="direccionPartida" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
-                        <div><label for="direccionLlegada" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Llegada:</label><select id="direccionLlegada" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
-                        <div><label for="fechaEmision" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Emisión:</label><input type="date" id="fechaEmision" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></div>
-                        <div><label for="fechaTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Inicio de Traslado:</label><input type="date" id="fechaTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></div>
-                        <div class="md:col-span-2"><label for="motivoTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Motivo de Traslado:</label><select id="motivoTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"><option value="">Seleccione un motivo</option><option value="Venta">Venta</option><option value="Traslado">Traslado</option><option value="Otros">Otros</option></select></div>
-                        <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-2">Modalidad de Traslado:</label><div class="flex items-center space-x-4"><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Privado" class="form-radio text-blue-600" checked><span class="ml-2 text-gray-700">Privado</span></label><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Público" class="form-radio text-blue-600"><span class="ml-2 text-gray-700">Público</span></label></div></div>
-                        <div><label for="placaVehiculo" class="block text-gray-700 text-sm font-semibold mb-2">Placa del Vehículo:</label><input type="text" id="placaVehiculo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="BVD 734" required></div>
-                        <div><label for="nombreConductor" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Conductor:</label><input type="text" id="nombreConductor" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="Emerson De la Cruz Cardenas" required></div>
-                        <div><label for="dniConductor" class="block text-gray-700 text-sm font-semibold mb-2">DNI del Conductor:</label><input type="text" id="dniConductor" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="75493844" required></div>
-                        <div><label for="licenciaConducir" class="block text-gray-700 text-sm font-semibold mb-2">Nro. de Licencia de Conducir:</label><input type="text" id="licenciaConducir" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="Q75493844" required></div>
+        <div id="guia-app-container" class="w-full hidden">
+            <h1 class="text-4xl font-bold text-gray-800 mb-8 mt-4 text-center">Guía de Remisión <br>LO DE JUAN</h1>
+            <form id="guideForm" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl mb-8 mx-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <div><label for="remitente" class="block text-gray-700 text-sm font-semibold mb-2">Remitente:</label><select id="remitente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
+                    <div><label for="destinatario" class="block text-gray-700 text-sm font-semibold mb-2">Destinatario:</label><select id="destinatario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
+                    <div><label for="direccionPartida" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Partida:</label><select id="direccionPartida" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
+                    <div><label for="direccionLlegada" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Llegada:</label><select id="direccionLlegada" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></select></div>
+                    <div><label for="fechaEmision" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Emisión:</label><input type="date" id="fechaEmision" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></div>
+                    <div><label for="fechaTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Inicio de Traslado:</label><input type="date" id="fechaTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" required></div>
+                    <div class="md:col-span-2"><label for="motivoTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Motivo de Traslado:</label><select id="motivoTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"><option value="">Seleccione un motivo</option><option value="Venta">Venta</option><option value="Traslado">Traslado</option><option value="Otros">Otros</option></select></div>
+                    <div class="md:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-2">Modalidad de Traslado:</label><div class="flex items-center space-x-4"><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Privado" class="form-radio text-blue-600" checked><span class="ml-2 text-gray-700">Privado</span></label><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Público" class="form-radio text-blue-600"><span class="ml-2 text-gray-700">Público</span></label></div></div>
+                    <div><label for="placaVehiculo" class="block text-gray-700 text-sm font-semibold mb-2">Placa del Vehículo:</label><input type="text" id="placaVehiculo" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="BVD 734" required></div>
+                    <div><label for="nombreConductor" class="block text-gray-700 text-sm font-semibold mb-2">Nombre del Conductor:</label><input type="text" id="nombreConductor" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="Emerson De la Cruz Cardenas" required></div>
+                    <div><label for="dniConductor" class="block text-gray-700 text-sm font-semibold mb-2">DNI del Conductor:</label><input type="text" id="dniConductor" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="75493844" required></div>
+                    
+                    <div>
+                        <label for="licenciaConducir" class="block text-gray-700 text-sm font-semibold mb-2">Nro. de Licencia de Conducir:</label>
+                        <input type="text" id="licenciaConducir" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" value="Q75493844" required>
                     </div>
-                    <h2 class="text-xl font-semibold text-gray-800 mb-4">Detalle de Productos:</h2>
-                    <div id="productosContainer" class="border border-gray-300 rounded-lg overflow-hidden"></div>
-                    <div id="otrosContainer" class="mt-4 border border-gray-300 rounded-lg overflow-hidden"></div>
-                    <div class="flex flex-col md:flex-row items-center gap-4 mt-8">
-                        <button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg transform hover:scale-105">Generar Guía</button>
-                        <button type="button" id="clearFormBtn" class="w-full px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105">Limpiar</button>
-                    </div>
-                </form>
-                <div id="guiaModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-40 hidden">
-                    <div id="modalContent" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
-                        <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold">&times;</button>
-                        <div id="guia-content-preview">
-                            </div>
-                        <div class="flex justify-center mt-6">
-                            <button id="printGuideBtn" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg transform hover:scale-105 mr-4">Imprimir Guía</button>
-                            <button id="closeModalBtnBottom" class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105">Cerrar</button>
-                        </div>
+
+                </div>
+                <h2 class="text-xl font-semibold text-gray-800 mb-4">Detalle de Productos:</h2>
+                <div id="productosContainer" class="border border-gray-300 rounded-lg overflow-hidden"></div>
+                <div id="otrosContainer" class="mt-4 border border-gray-300 rounded-lg overflow-hidden"></div>
+                <div class="flex items-center gap-4 mt-8"><button type="submit" class="w-full px-6 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-700 transition-colors shadow-lg transform hover:scale-105">Generar Guía</button><button type="button" id="clearFormBtn" class="w-full px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105">Limpiar</button></div>
+            </form>
+            <div id="guiaModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-40 hidden">
+                <div id="modalContent" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+                    <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-600 hover:text-gray-900 text-3xl font-bold">&times;</button>
+                    <div id="guia-content" class="p-6 border border-gray-300 rounded-lg"></div>
+                    <div class="modal-actions-container flex justify-center mt-6">
+                        <button id="printGuideBtn" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg transform hover:scale-105 mr-4">Imprimir Guía</button>
+                        <button id="closeModalBtnBottom" class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
+    
     <script src="script.js"></script>
 </body>
 </html>
-
