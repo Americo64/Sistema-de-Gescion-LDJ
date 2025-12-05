@@ -35,11 +35,11 @@ const mockProductos = [
     { "category": "BEBIDAS", "descripcion": "CERVEZA CUSQUEÑA NEGRA x 6", "unidad": "PQT", "itemsPerUnit": 6 },
     { "category": "BEBIDAS", "descripcion": "CERVEZA CUSQUEÑA TRIGO x 6", "unidad": "PQT", "itemsPerUnit": 6 },
     { "category": "BEBIDAS", "descripcion": "CERVEZA PILSEN x 6", "unidad": "PQT", "itemsPerUnit": 6 },
-    { "category": "BEBIDAS", "descripcion": "GASEOSA COCA COLA DE 1 LITRO x 4", "unidad": "PQT", "itemsPerUnit": 4 },
+    { "category": "BEBIDAS", "descripcion": "GASEOSA COCA COLA DE 1 LITRO x 6", "unidad": "PQT", "itemsPerUnit": 4 },
     { "category": "BEBIDAS", "descripcion": "GASEOSA COCA COLA DE 1.5 LITRO x 6", "unidad": "PQT", "itemsPerUnit": 6 },
     { "category": "BEBIDAS", "descripcion": "GASEOSA COCA COLA DE 1/2 LITRO x 12", "unidad": "PQT", "itemsPerUnit": 12 },
     { "category": "BEBIDAS", "descripcion": "GASEOSA FANTA DE 1/2 LITRO x 12", "unidad": "PQT", "itemsPerUnit": 12 },
-    { "category": "BEBIDAS", "descripcion": "GASEOSA INCA KOLA DE 1 LITRO x 4", "unidad": "PQT", "itemsPerUnit": 4 },
+    { "category": "BEBIDAS", "descripcion": "GASEOSA INCA KOLA DE 1 LITRO x ", "unidad": "PQT", "itemsPerUnit": 4 },
     { "category": "BEBIDAS", "descripcion": "GASEOSA INCA KOLA DE 1.5 LITRO x 6", "unidad": "PQT", "itemsPerUnit": 6 },
     { "category": "BEBIDAS", "descripcion": "GASEOSA INCA KOLA DE 1/2 LITRO x 12", "unidad": "PQT", "itemsPerUnit": 12 },
     { "category": "BEBIDAS NATURALES", "descripcion": "ARANDANO CONGELADO", "unidad": "BOL", "itemsPerUnit": 1 },
@@ -306,4 +306,5 @@ const baseProducts = [
     { id: 'l15', category: 'LICORES', name: 'Vino Intikalka', u_med: 'BOT', min_stocks: { "Villa 1": 2, "Villa 2": 2, "Manchay": 2 } },
     { id: 'l16', category: 'LICORES', name: 'Vino Magdalena', u_med: 'BOT', min_stocks: { "Villa 1": 28, "Villa 2": 20, "Manchay": 28 } },
     { id: 'l17', category: 'LICORES', name: 'Vino Piedras Negras', u_med: 'BOT', min_stocks: { "Villa 1": 4, "Villa 2": 4, "Manchay": 4 } },
+
 ];
