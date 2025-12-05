@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SG - Lo de Juan</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="manifest" href="manifest.json">
+</head>
+<body class="bg-gray-50">
+
+    <header class="bg-white shadow-md p-4 flex flex-col md:flex-row justify-between items-center sticky top-0 z-50">
+        <h1 class="text-2xl font-bold text-gray-800 mb-4 md:mb-0">SG - Lo de Juan</h1>
+        <nav class="w-full md:w-auto">
+            <div class="flex flex-col sm:flex-row gap-2">
+                <button id="switchToStock" class="bg-slate-800 text-white font-semibold px-4 py-2 rounded-lg hover:bg-slate-700 transition-colors w-full flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-boxes-stacked w-5 text-center"></i>
+                    Stock de Pollo
+                </button>
+                <button id="switchToGuia" class="text-gray-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors w-full flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-truck-fast w-5 text-center"></i>
+                    Guía de Remisión
+                </button>
+                <button id="switchToPedidos" class="text-gray-700 font-semibold px-4 py-2 rounded-lg hover:bg-gray-200 transition-colors w-full flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-clipboard-list w-5 text-center"></i>
+                    Pedidos
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="p-4 flex flex-col items-center">
+        
+        <div id="stock-app-container" class="w-full">
+            <div class="max-w-4xl mx-auto w-full">
+                <header class="bg-slate-800 shadow-2xl p-4 rounded-xl mb-6">
+                    <h1 class="text-2xl sm:text-3xl font-extrabold text-white text-center flex items-center justify-center gap-3"><i class="fa-solid fa-chicken"></i> Control de Stock de Pollo</h1>
+                </header>
+
+                <div class="bg-white p-6 rounded-xl shadow-lg mb-6 border-b-4 border-slate-500">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4 border-b pb-3 flex items-center gap-2"><i class="fa-solid fa-plus-circle text-slate-600"></i> Agregar Nuevo Registro</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="ubicacion" class="block text-sm font-bold text-gray-700 mb-1">Sucursal:</label>                            
+                            <div class="flex flex-col sm:flex-row gap-2">
+                                <select id="ubicacion" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-slate-500 focus:border-slate-500 block p-2.5"></select>
+                                <div class="flex gap-2 justify-end">
+                                    <button id="add-branch-btn-stock" class="p-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors" title="Añadir Sucursal"><i class="fa-solid fa-plus"></i></button>
+                                    <button id="edit-branch-btn-stock" class="p-2.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors" title="Editar Sucursal Seleccionada"><i class="fa-solid fa-pencil"></i></button>
+                                    <button id="delete-branch-btn-stock" class="p-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="Eliminar Sucursal Seleccionada"><i class="fa-solid fa-trash-can"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="saldo-anterior" class="block text-sm font-bold text-gray-700 mb-1">Saldo Anterior en Almacén:</label>
+                            <input type="number" id="saldo-anterior" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label for="ingreso" class="block text-sm font-bold text-gray-700 mb-1">(+) Ingreso del Día:</label>
+                            <input type="number" id="ingreso" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm">
+                        </div>
+                        <div>
+                            <label for="enviado-anterior" class="block text-sm font-bold text-gray-700 mb-1">Enviado Días Anteriores:</label>
+                            <input type="number" id="enviado-anterior" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="enviado" class="block text-sm font-bold text-gray-700 mb-1">(-) Unidades Enviadas Hoy:</label>
+                            <input type="number" id="enviado" class="w-full p-2.5 border border-gray-300 rounded-lg text-sm">
+                        </div>
+                        
+                    </div>
+                    <button id="agregar-btn" class="mt-4 w-full bg-orange-600 hover:bg-orange-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Agregar a la Tabla
+                    </button>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg">
+                    <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2"><i class="fa-solid fa-chart-pie text-slate-700"></i> Reporte de Stock</h2>
+                    <div class="overflow-x-auto">
+                        <table id="reporte-tabla" class="w-full text-sm text-left text-gray-500">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100"><tr><th class="px-6 py-3">Sucursal</th><th class="px-6 py-3 text-center">Stock Inicial</th><th class="px-6 py-3 text-center">Total Enviado</th><th class="px-6 py-3 text-center">Stock Final</th><th class="px-6 py-3 text-center">Acciones</th></tr></thead>
+                        <tbody id="tabla-cuerpo"></tbody>
+                        <tfoot class="font-semibold text-gray-700 bg-gray-100"><tr><td class="px-6 py-3 text-right font-bold" colspan="1">TOTAL</td><td id="total-ingreso" class="px-6 py-3 text-center">0</td><td id="total-enviado" class="px-6 py-3 text-center">0</td><td id="total-final" class="px-6 py-3 text-center font-bold text-orange-600">0</td><td></td></tr></tfoot>
+                    </table>
+                    </div>
+                    <button id="gerencia-report-btn" class="mt-4 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-invoice"></i> Generar Reporte para Gerencia
+                    </button>
+                </div>
+                <div id="reporte-individual-container" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+                    <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative">
+                        <button id="cerrar-reporte-btn" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar reporte"><i class="fa-solid fa-times"></i></button>
+                        <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2"><i class="fa-solid fa-paper-plane"></i> Reporte para Enviar</h3>
+                        <pre id="reporte-texto" class="bg-gray-100 p-4 rounded-lg text-sm whitespace-pre-wrap font-mono overflow-x-auto"></pre>
+                        <a id="whatsapp-share-btn" class="mt-4 w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md flex items-center justify-center gap-2" href="#" target="_blank" rel="noopener noreferrer">
+                            <i class="fa-brands fa-whatsapp"></i>
+                            Compartir en WhatsApp
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="guia-app-container" class="w-full hidden">
+            <h1 class="text-4xl font-bold text-gray-800 mb-8 mt-4 text-center flex items-center justify-center gap-3"><i class="fa-solid fa-truck"></i> Guía de Remisión</h1>
+            <form id="guideForm" class="bg-white p-8 rounded-xl shadow-lg w-full max-w-4xl mb-8 mx-auto">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-6">
+                    <div>
+                        <label for="remitente" class="block text-gray-700 text-sm font-semibold mb-2">Remitente:</label>
+                        <div class="flex gap-2">
+                            <select id="remitente" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></select>
+                            <button type="button" id="add-company-btn" class="p-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors" title="Añadir Razón Social"><i class="fa-solid fa-plus"></i></button>
+                            <button type="button" id="edit-company-btn" class="p-2.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors" title="Editar Razón Social Seleccionada"><i class="fa-solid fa-pencil"></i></button>
+                            <button type="button" id="delete-company-btn" class="p-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="Eliminar Razón Social Seleccionada"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <div><label for="destinatario" class="block text-gray-700 text-sm font-semibold mb-2">Destinatario:</label><select id="destinatario" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></select></div>
+                    <div><label for="direccionPartida" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Partida:</label><select id="direccionPartida" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></select></div>
+                    <div><label for="direccionLlegada" class="block text-gray-700 text-sm font-semibold mb-2">Dirección de Llegada:</label><select id="direccionLlegada" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></select></div>
+                    <div><label for="fechaEmision" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Emisión:</label><input type="date" id="fechaEmision" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></div>
+                    <div><label for="fechaTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Fecha de Inicio de Traslado:</label><input type="date" id="fechaTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></div>
+                    <div class="sm:col-span-2"><label for="motivoTraslado" class="block text-gray-700 text-sm font-semibold mb-2">Motivo de Traslado:</label><select id="motivoTraslado" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500"><option value="">Seleccione un motivo</option><option value="Venta">Venta</option><option value="Traslado">Traslado</option><option value="Otros">Otros</option></select></div>
+                    <div class="sm:col-span-2"><label class="block text-gray-700 text-sm font-semibold mb-2">Modalidad de Traslado:</label><div class="flex items-center space-x-4"><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Privado" class="form-radio text-slate-600" checked><span class="ml-2 text-gray-700">Privado</span></label><label class="inline-flex items-center"><input type="radio" name="modalidadTraslado" value="Público" class="form-radio text-slate-600"><span class="ml-2 text-gray-700">Público</span></label></div></div>                    
+                    <div class="sm:col-span-2">
+                        <label for="driver-selector" class="block text-gray-700 text-sm font-semibold mb-2">Conductor y Vehículo:</label>
+                        <div class="flex gap-2">
+                            <select id="driver-selector" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" required></select>
+                            <button type="button" id="add-driver-btn" class="p-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors" title="Añadir Conductor"><i class="fa-solid fa-plus"></i></button>
+                            <button type="button" id="edit-driver-btn" class="p-2.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors" title="Editar Conductor Seleccionado"><i class="fa-solid fa-pencil"></i></button>
+                            <button type="button" id="delete-driver-btn" class="p-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="Eliminar Conductor Seleccionado"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                    <div><label for="dniConductor" class="block text-gray-700 text-sm font-semibold mb-2">DNI del Conductor:</label><input type="text" id="dniConductor" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" readonly></div>
+                    <div><label for="licenciaConducir" class="block text-gray-700 text-sm font-semibold mb-2">Nro. de Licencia:</label><input type="text" id="licenciaConducir" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" readonly></div>
+                    <div class="sm:col-span-2"><label for="placaVehiculo" class="block text-gray-700 text-sm font-semibold mb-2">Placa del Vehículo:</label><input type="text" id="placaVehiculo" class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100" readonly></div>
+                </div>
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-semibold text-gray-800 flex items-center gap-2"><i class="fa-solid fa-box-open text-gray-600"></i> Detalle de Productos:</h2>
+                    <button type="button" id="manage-guia-products-btn" class="text-sm text-slate-600 hover:text-slate-800 font-semibold flex items-center gap-1">
+                        <i class="fa-solid fa-cogs"></i> Gestionar Productos
+                    </button>
+                </div>
+                <div id="productosContainer" class="border border-gray-300 rounded-lg overflow-hidden"></div>
+                <div id="otrosContainer" class="mt-4 border border-gray-300 rounded-lg overflow-hidden"></div>
+                <div class="flex flex-col sm:flex-row items-center gap-4 mt-8">
+                    <button type="submit" class="w-full px-6 py-3 bg-orange-600 text-white font-bold rounded-lg hover:bg-orange-700 transition-colors shadow-lg transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-file-alt"></i> Generar Guía
+                    </button>
+                    <button type="button" id="clearFormBtn" class="w-full sm:w-1/2 px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-eraser"></i> Limpiar
+                    </button>
+                </div>
+            </form>
+            <div id="guiaModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-40 hidden">
+                <div id="modalContent" class="bg-white rounded-xl shadow-2xl w-full max-w-4xl p-8 relative overflow-y-auto max-h-[90vh]">
+                    <button id="closeModalBtn" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar guía"><i class="fa-solid fa-times"></i></button>
+                    <div id="guia-content" class="p-6 border border-gray-300 rounded-lg"></div>
+                    <div class="modal-actions-container flex justify-center mt-6">
+                        <button id="printGuideBtn" class="px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition-colors shadow-lg transform hover:scale-105 mr-4 flex items-center gap-2">
+                            <i class="fa-solid fa-print"></i> Imprimir Guía
+                        </button>
+                        <button id="closeModalBtnBottom" class="px-6 py-3 bg-gray-500 text-white font-bold rounded-lg hover:bg-gray-600 transition-colors shadow-lg transform hover:scale-105 flex items-center gap-2">
+                            <i class="fa-solid fa-times-circle"></i> Cerrar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pedidos-app-container" class="w-full hidden">
+             <header class="bg-slate-800 shadow-2xl p-4 rounded-xl mb-6">
+                <div class="max-w-4xl mx-auto flex flex-col md:flex-row justify-between items-center space-y-3 md:space-y-0">
+                    <h1 id="main-title" class="text-2xl sm:text-3xl font-extrabold text-white text-center md:text-left flex items-center gap-3"><i class="fa-solid fa-warehouse"></i> Pedidos de Almacén</h1>
+                    <div id="day-header" class="text-center p-2 rounded-lg">
+                        </div>
+                </div>
+            </header>
+
+            <main class="max-w-4xl mx-auto p-0">
+                <div class="bg-white p-4 rounded-xl shadow-lg mb-6">
+                    <label for="branch-selector" class="block text-sm font-bold text-gray-700 mb-2"><i class="fa-solid fa-store"></i> Sucursal:</label>
+                    <div class="flex flex-col sm:flex-row gap-2">
+                        <select id="branch-selector" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-slate-500 focus:border-slate-500 block p-2.5"></select>
+                        <div class="flex gap-2 justify-end">
+                            <button id="add-branch-btn" class="p-2.5 bg-slate-600 text-white rounded-lg hover:bg-slate-700 transition-colors" title="Añadir Sucursal"><i class="fa-solid fa-plus"></i></button>
+                            <button id="edit-branch-btn" class="p-2.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors" title="Editar Sucursal Seleccionada"><i class="fa-solid fa-pencil"></i></button>
+                            <button id="delete-branch-btn" class="p-2.5 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors" title="Eliminar Sucursal Seleccionada"><i class="fa-solid fa-trash-can"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-white p-4 rounded-xl shadow-lg mb-6">
+                    <label for="order-date-input" class="block text-sm font-bold text-gray-700 mb-2"><i class="fa-solid fa-calendar-day"></i> Fecha del Pedido:</label>
+                    <input type="date" id="order-date-input" class="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-slate-500 focus:border-slate-500 block p-2.5">
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg mb-6 border-b-4 border-slate-500">
+                    <div id="order-summary-toggle" class="flex justify-between items-center cursor-pointer border-b pb-3 mb-4">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-shopping-cart text-green-600"></i> Resumen del Pedido</h2>
+                            <p class="text-xs text-gray-500">Toca para ver/ocultar detalle</p>
+                        </div>
+                        <span class="text-3xl font-extrabold text-orange-600" id="total-pedido">0</span>
+                    </div>
+
+                    <div id="order-summary-content" class="bg-gray-50 p-4 rounded-lg min-h-[50px] max-h-64 overflow-y-auto mb-4 hidden">
+                        <p class="text-gray-500 text-center italic">Cargando inventario...</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                        <button id="copy-order-btn"
+                                class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-copy"></i>
+                            Copiar Pedido
+                        </button>
+                        <div id="pdf-dropdown-container" class="relative w-full sm:w-auto">
+                            <button id="pdf-dropdown-btn" class="w-full bg-slate-800 hover:bg-slate-700 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-slate-300 flex items-center justify-center">
+                                <i class="fa-solid fa-file-pdf mr-2"></i> Generar PDF <i class="fa-solid fa-chevron-down ml-2 text-xs"></i>
+                            </button>
+                            <div id="pdf-options" class="hidden absolute right-0 mt-2 w-full sm:w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
+                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+                                    </div>
+                            </div>
+                        </div>
+                        <div id="jpg-dropdown-container" class="relative w-full sm:w-auto">
+                            <button id="jpg-dropdown-btn" class="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-4 rounded-xl transition duration-300 shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-orange-300 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-file-image"></i> Generar JPG <i class="fa-solid fa-chevron-down ml-2 text-xs"></i>
+                            </button>
+                            <div id="jpg-options" class="hidden absolute right-0 mt-2 w-full sm:w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-20">
+                                <div class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="jpg-options-menu">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="bg-white p-6 rounded-xl shadow-lg">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 gap-2">
+                        <div class="w-full sm:w-auto">
+                            <h2 class="text-2xl font-bold text-gray-700 flex items-center gap-2"><i class="fa-solid fa-dolly"></i> Inventario y Stock</h2>
+                            <button id="add-product-btn" class="mt-1 text-sm text-slate-600 hover:text-slate-800 font-semibold flex items-center gap-1"><i class="fa-solid fa-plus"></i> Añadir Nuevo Producto</button>
+                        </div>
+                        <button id="reset-stock-btn"
+                                class="w-full sm:w-auto bg-red-100 hover:bg-red-200 text-red-700 font-bold py-2 px-4 rounded-lg text-sm transition duration-300 border border-red-300 flex items-center gap-2">
+                            <i class="fa-solid fa-sync-alt"></i> Reiniciar Stock
+                        </button>
+                    </div>
+
+                    <div class="flex flex-col sm:flex-row gap-2 mb-4">
+                        <input type="text" id="search-input" placeholder="🔍 Buscar por nombre..." class="w-full p-3 border border-gray-300 rounded-lg focus:ring-slate-500 focus:border-slate-500" aria-label="Buscar producto">
+                        <select id="category-filter" class="w-full sm:w-64 p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-slate-500 focus:border-slate-500">
+                            <option value="">Todas las categorías</option>
+                        </select>
+                    </div>
+                    <div id="inventory-container" class="space-y-3">
+                        <div class="text-center p-10 italic text-gray-500">Conectando con servicio de datos...</div>
+                    </div>
+                </section>
+                
+                 <footer class="mt-8 p-4 text-center text-xs text-gray-500 border-t border-gray-200">
+                    <p id="footer-note-uid">UID: <span id="user-id">N/A (Mockup Local)</span></p>
+                    <p>Nota: Valores de Stock Mínimo calculados a partir de (Stock Mínimo Histórico + Pedido Máximo Histórico).</p>
+                </footer>
+            </main>
+        </div>
+
+        <div id="add-product-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 relative">
+                <button id="close-add-product-modal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar modal de añadir producto"><i class="fa-solid fa-times"></i></button>
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2"><i class="fa-solid fa-tag text-slate-600"></i> Añadir Nuevo Producto al Catálogo</h3>
+                <form id="add-product-form" class="space-y-4">
+                    <div>
+                        <label for="new-product-name" class="block text-sm font-bold text-gray-700 mb-1">Nombre del Producto:</label>
+                        <input type="text" id="new-product-name" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label for="new-product-category" class="block text-sm font-bold text-gray-700 mb-1">Categoría:</label>
+                            <input type="text" id="new-product-category" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                        </div>
+                        <div>
+                            <label for="new-product-umed" class="block text-sm font-bold text-gray-700 mb-1">Unidad de Medida:</label>
+                            <input type="text" id="new-product-umed" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="ej: KG, PQT, CAJA" required>
+                        </div>
+                    </div>
+                    <p class="text-sm font-bold text-gray-700 mt-4">Stocks Mínimos por Sucursal:</p>
+                    <div id="new-product-min-stocks" class="grid grid-cols-1 sm:grid-cols-3 gap-4"></div>
+                    <div class="flex justify-end gap-4 pt-4 border-t mt-4">
+                        <button type="button" id="cancel-add-product" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 flex items-center gap-2">
+                            <i class="fa-solid fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="bg-orange-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center gap-2">
+                            <i class="fa-solid fa-save"></i> Guardar Producto
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="manage-branch-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+            <div class="bg-white rounded-xl shadow-2xl w-full max-w-md p-6 relative">
+                <button id="close-branch-modal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar modal de sucursal"><i class="fa-solid fa-times"></i></button>
+                <h3 id="branch-modal-title" class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">Añadir Sucursal</h3>
+                <form id="manage-branch-form" class="space-y-4">
+                    <input type="hidden" id="original-branch-name">
+                    <div>
+                        <label for="branch-name-input" class="block text-sm font-bold text-gray-700 mb-1">Nombre de la Sucursal:</label>
+                        <input type="text" id="branch-name-input" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                    </div>
+                    <div class="flex justify-end gap-4 pt-4 border-t mt-4">
+                        <button type="button" id="cancel-branch-action" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 flex items-center gap-2">
+                            <i class="fa-solid fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="bg-orange-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center gap-2">
+                            <i class="fa-solid fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+    
+    <div id="toast-container" class="fixed top-5 right-5 z-[100] w-full max-w-xs">
+        </div>
+
+    <div id="manage-guia-products-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-3xl p-6 relative max-h-[90vh] flex flex-col">
+            <button id="close-manage-guia-products-modal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar gestión de productos"><i class="fa-solid fa-times"></i></button>
+            <div id="guia-product-list-view">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2"><i class="fa-solid fa-book"></i> Catálogo de Productos (Guía)</h3>
+                <div class="flex justify-end mb-4">
+                    <button id="show-add-guia-product-form-btn" class="bg-slate-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-slate-700 flex items-center gap-2">
+                        <i class="fa-solid fa-plus"></i> Añadir Producto
+                    </button>
+                </div>
+                <div class="overflow-y-auto flex-grow">
+                    <table class="w-full text-sm text-left">
+                        <thead class="text-xs text-gray-700 uppercase bg-gray-100 sticky top-0">
+                            <tr><th class="px-4 py-2">Descripción</th><th class="px-4 py-2">Categoría</th><th class="px-4 py-2">Unidad</th><th class="px-4 py-2">Acciones</th></tr>
+                        </thead>
+                        <tbody id="guia-products-list"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div id="guia-product-form-view" class="hidden">
+                <h3 id="guia-form-title" class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">Añadir Producto</h3>
+                <form id="guia-product-form" class="space-y-4 mt-4">
+                    <input type="hidden" id="guia-product-original-desc">
+                    <div><label for="guia-product-desc" class="block text-sm font-bold text-gray-700 mb-1">Descripción:</label><input type="text" id="guia-product-desc" class="w-full p-2 border border-gray-300 rounded-lg" required></div>
+                    <div><label for="guia-product-cat" class="block text-sm font-bold text-gray-700 mb-1">Categoría:</label><input type="text" id="guia-product-cat" class="w-full p-2 border border-gray-300 rounded-lg" required></div>
+                    <div><label for="guia-product-unit" class="block text-sm font-bold text-gray-700 mb-1">Unidad:</label><input type="text" id="guia-product-unit" class="w-full p-2 border border-gray-300 rounded-lg" placeholder="ej: KG, UND" required></div>
+                    <div class="flex justify-end gap-4 pt-4 border-t mt-4">
+                        <button type="button" id="cancel-guia-product-form-btn" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 flex items-center gap-2">
+                            <i class="fa-solid fa-times"></i> Cancelar
+                        </button>
+                        <button type="submit" class="bg-orange-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center gap-2">
+                            <i class="fa-solid fa-save"></i> Guardar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div id="manage-company-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 relative">
+            <button id="close-company-modal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar modal de empresa"><i class="fa-solid fa-times"></i></button>
+            <h3 id="company-modal-title" class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">Añadir Razón Social</h3>
+            <form id="manage-company-form" class="space-y-3 max-h-[70vh] overflow-y-auto pr-2">
+                <input type="hidden" id="original-company-ruc">
+                <div>
+                    <label for="company-ruc" class="block text-sm font-bold text-gray-700 mb-1">RUC:</label>
+                    <input type="text" id="company-ruc" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label for="company-razon-social" class="block text-sm font-bold text-gray-700 mb-1">Razón Social:</label>
+                    <input type="text" id="company-razon-social" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label for="company-direccion" class="block text-sm font-bold text-gray-700 mb-1">Dirección:</label>
+                    <input type="text" id="company-direccion" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    <div><label for="company-distrito" class="block text-sm font-bold text-gray-700 mb-1">Distrito:</label><input type="text" id="company-distrito" class="w-full p-2 border border-gray-300 rounded-lg" required></div>
+                    <div><label for="company-provincia" class="block text-sm font-bold text-gray-700 mb-1">Provincia:</label><input type="text" id="company-provincia" class="w-full p-2 border border-gray-300 rounded-lg" required></div>
+                    <div><label for="company-departamento" class="block text-sm font-bold text-gray-700 mb-1">Dpto:</label><input type="text" id="company-departamento" class="w-full p-2 border border-gray-300 rounded-lg" required></div>
+                </div>
+                <div class="flex justify-end gap-4 pt-4 border-t mt-4">
+                    <button type="button" id="cancel-company-action" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300 flex items-center gap-2">
+                        <i class="fa-solid fa-times"></i> Cancelar
+                    </button>
+                    <button type="submit" class="bg-orange-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-700 flex items-center gap-2">
+                        <i class="fa-solid fa-save"></i> Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="manage-driver-modal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-lg p-6 relative">
+            <button id="close-driver-modal" class="absolute top-3 right-4 text-gray-500 hover:text-gray-800 text-2xl" aria-label="Cerrar modal de conductor"><i class="fa-solid fa-times"></i></button>
+            <h3 id="driver-modal-title" class="text-xl font-bold text-gray-800 mb-4 border-b pb-3 flex items-center gap-2">Añadir Conductor</h3>
+            <form id="manage-driver-form" class="space-y-3">
+                <input type="hidden" id="original-driver-dni">
+                <div>
+                    <label for="driver-name" class="block text-sm font-bold text-gray-700 mb-1">Nombre del Conductor:</label>
+                    <input type="text" id="driver-name" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label for="driver-dni" class="block text-sm font-bold text-gray-700 mb-1">DNI del Conductor:</label>
+                    <input type="text" id="driver-dni" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label for="driver-license" class="block text-sm font-bold text-gray-700 mb-1">Nro. de Licencia:</label>
+                    <input type="text" id="driver-license" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div>
+                    <label for="driver-plate" class="block text-sm font-bold text-gray-700 mb-1">Placa del Vehículo:</label>
+                    <input type="text" id="driver-plate" class="w-full p-2 border border-gray-300 rounded-lg" required>
+                </div>
+                <div class="flex justify-end gap-4 pt-4 border-t mt-4">
+                    <button type="button" id="cancel-driver-action" class="bg-gray-200 text-gray-800 font-bold py-2 px-4 rounded-lg hover:bg-gray-300">Cancelar</button>
+                    <button type="submit" class="bg-orange-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-orange-700">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="products.js"></script>
+    <script src="script.js"></script>
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then(registration => {
+                        console.log('Service Worker registrado con éxito:', registration.scope);
+                    })
+                    .catch(error => {
+                        console.log('Fallo en el registro del Service Worker:', error);
+                    });
+            });
+        }
+    </script>
+</body>
+</html>
